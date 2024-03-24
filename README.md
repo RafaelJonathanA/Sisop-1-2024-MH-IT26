@@ -1,5 +1,6 @@
-# Sisop-1-2024-MH-IT26**
-# | Nama      | NRP         |
+# Sisop-1-2024-MH-IT26
+  **IT 026**
+  | Nama      | NRP         |
   |-----------|-------------|
   | Rafael    | 5027231006  |
   | Abhinaya  | 5027231011  |
