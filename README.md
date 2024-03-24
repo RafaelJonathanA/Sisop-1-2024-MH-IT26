@@ -1,7 +1,7 @@
 # Sisop-1-2024-MH-IT26
-  **IT 026**
+  **KELOMPOK IT 26**
   | Nama      | NRP         |
   |-----------|-------------|
-  | Rafael    | 5027231006  |
-  | Abhinaya  | 5027231011  |
-  | Danendra  | 5027231063  |
+  | Rafael Jonathan Arnoldus   | 5027231006  |
+  | Muhammad Abhinaya Al-Faruqi  | 5027231011  |
+  | Danendra Fidel Khansa  | 5027231063  |
