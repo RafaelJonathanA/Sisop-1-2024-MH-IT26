@@ -1,4 +1,4 @@
-# <span style="color: red;">Sisop-1-2024-MH-IT26</span>
+<span style="color: red;">Sisop-1-2024-MH-IT26</span>
 Sisop-1-2024-MH-IT26
   **KELOMPOK IT 26**
   | Nama      | NRP         |
