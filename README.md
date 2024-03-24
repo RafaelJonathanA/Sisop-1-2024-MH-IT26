@@ -1,4 +1,4 @@
-##### Sisop-1-2024-MH-IT26
+# Sisop-1-2024-MH-IT26
 
 ## ***'KELOMPOK IT 26'***
   | Nama      | NRP         |
