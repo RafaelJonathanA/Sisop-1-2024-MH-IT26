@@ -760,8 +760,6 @@ echo "[$(date '+%d/%m/%Y %H:%M:%S')] [LOGIN FAILED] User with email $email logge
 ```
 Dengan kode diatas maka setiap kali ada register yang berhasil ataupun gagal akan tercatat di auth.log bergitupun saat menjalankan login.sh apabila gagal login ataupun berhasil login maka akan tercatat di auth.log
 
-## *Dokumentasi*
-
 ## ***SOAL 3 (Abhinaya)***
 **Projek: Pengatur Gambar Karakter Genshin**
 
