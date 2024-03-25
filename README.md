@@ -767,6 +767,134 @@ Dengan kode diatas maka setiap kali ada register yang berhasil ataupun gagal aka
 ## ***PENJELASAN PENGERJAAN***
 ## *Dokumentasi*
 
+**Projek: Pengatur Gambar Karakter Genshin**
+
+Skrip ini mengotomatiskan pengorganisasian gambar karakter Genshin yang diunduh dan informasi terkaitnya.
+
+**Perangkat Lunak yang Dibutuhkan:**
+
+* Bash shell
+* `wget`
+* `unzip`
+* `xxd`
+* `dos2unix`
+
+**Instruksi:**
+
+1. Pastikan program yang dibutuhkan sudah terinstall.
+2. Simpan skrip ini sebagai `genshin_character_organizer.sh`.
+3. Buat skrip dapat dieksekusi: `chmod +x genshin_character_organizer.sh`.
+4. Jalankan skrip: `./genshin_character_organizer.sh`.
+
+**Penjelasan:**
+
+1. **Pengaturan Direktori:**
+    * Skrip membuat direktori bernama `praktikum_tka_no.2` di direktori home Anda jika belum ada.
+    * Kemudian berpindah ke direktori `praktikum_tka_no.2`.
+
+2. **Unduh File:**
+    * Skrip mengunduh file ZIP (berisi gambar karakter dan daftar karakter) dari link Google Drive menggunakan `wget`.
+    * Skrip mengekstrak kedua file arsip yang diunduh (`genshin.zip`) dan arsip terlampir (`genshin_character.zip`) secara diam-diam (tanpa output).
+
+3. **Ganti Nama Gambar Karakter:**
+    * Skrip memeriksa apakah direktori `genshin_character` ada setelah diekstrak. Jika tidak, skrip akan keluar dengan pesan kesalahan.
+    * Script kemudian melakukan perulangan pada setiap file gambar JPG di direktori saat ini.
+    * Menggunakan `xxd`, script mengubah nama file dari format terenkripsi menjadi string karakter yang dapat dibaca dan menetapkannya ke variabel baru.
+    * Nama file asli kemudian diganti dengan string baru yang dapat dibaca dengan ekstensi `.jpg` ditambahkan.
+
+4. **Memproses Daftar Karakter:**
+    * Skrip menggunakan `dos2unix` untuk mengonversi akhiran baris dalam file `list_character.csv` (jika perlu) untuk memastikan parsing yang benar.
+    * Script ber iterasi melalui setiap baris dalam file CSV menggunakan loop `while`. Setiap baris dibagi menjadi kolom yang dipisahkan koma menggunakan `read`.
+    * Di dalam loop, script kembali melakukan iterasi melalui setiap file gambar JPG.
+    * Jika nama file gambar cocok dengan nama karakter dari kolom pertama baris CSV, skrip mengganti nama gambar dengan informasi tambahan dari kolom CSV (nama, tipe senjata, dll.).
+
+5. **Atur Gambar berdasarkan Jenis Senjata:**
+    * Script kembali melakukan iterasi melalui setiap file gambar JPG.
+    * Script mengekstrak tipe senjata dari nama file menggunakan perintah `cut`.
+    * Jika direktori dengan nama tipe senjata sudah ada, gambar akan disalin ke direktori tersebut. Jika tidak, direktori baru akan dibuat, dan gambar akan disalin ke sana.
+
+6. **Jumlah Jenis Senjata:**
+    * Script menggunakan `grep` untuk menghitung jumlah nama file gambar yang mengandung setiap tipe senjata ("Claymore", "Sword", dll.).
+    * Kemudian script mencetak tipe senjata dan jumlahnya.
+
+7. **Pembersihan:**
+    * Script berpindah kembali ke direktori kerja awal (`praktikum_tka_no.2`).
+    * Terakhir, script menghapus file arsip yang diunduh (`genshin.zip` dan `genshin_character.zip`) dan file CSV daftar karakter.
+
+8. **Mulai Ulang Shell:**
+    * Script memulai kembali Bash shell (`exec bash`), yang pada umumnya tidak diperlukan tetapi mungkin berguna untuk keperluan debugging.
+
+
+**Catatan:**
+
+* Skrip ini bergantung pada format tertentu untuk file ZIP yang diunduh dan file CSV daftar karakter.
+* Anda mungkin perlu memodifikasi link download Google Drive atau logika untuk parsing file CSV tergantung pada format data yang sebenarnya.
+
+
+**Projek: Pencari Link Rahasia dari Gambar**
+
+Skrip ini mencari link rahasia yang disembunyikan di dalam file gambar menggunakan teknik steganografi.
+
+**Perangkat Lunak yang Dibutuhkan:**
+
+* Bash shell
+* `steghide`
+* `base64`
+* `wget`
+
+**Instruksi:**
+
+1. Pastikan program yang dibutuhkan sudah terinstall.
+2. Simpan skrip ini sebagai `pencari_link_rahasia.sh`.
+3. Buat skrip dapat dieksekusi: `chmod +x pencari_link_rahasia.sh`.
+4. Pindahkan file gambar yang diduga mengandung link rahasia ke direktori `genshin_character` di direktori home Anda (sesuaikan jika direktori berbeda).
+5. Jalankan skrip: `./pencari_link_rahasia.sh`.
+
+**Penjelasan:**
+
+1. **Periksa Direktori `genshin_character`:**
+
+    * Skrip memeriksa keberadaan direktori `genshin_character`.
+    * Jika direktori tidak ditemukan, skrip akan menampilkan pesan kesalahan dan keluar.
+
+2. **Ekstrak Informasi dari Gambar:**
+
+    * Script menggunakan program `steghide` untuk mengekstrak informasi tersembunyi dari setiap file gambar JPG di direktori `genshin_character`. 
+    * Asumsikan password untuk ekstraksi sudah diketahui dan disimpan dalam variabel `pass`.
+
+3. **Dekripsi dan Pencarian Link:**
+
+    * Script kemudian memproses setiap file teks yang dihasilkan dari ekstraksi (`*.txt`).
+    * Isi file teks di-decode menggunakan `base64` dan disimpan ke file `secret.txt`.
+    * Script menggunakan ekspresi regular untuk mencari pola link (format HTTP, HTTPS, FTP, atau file) di dalam `secret.txt`.
+    * Jika link ditemukan, script akan:
+        * Memindahkan `secret.txt` ke direktori utama (`$FILE_DIR`).
+        * Mencatat waktu penemuan, nama file gambar asli, dan link rahasia ke dalam file log (`image.log`).
+        * Hentikan proses pencarian lebih lanjut.
+    * Jika link tidak ditemukan, script akan mencatat informasi tersebut ke file log dan menghapus file teks.
+    * Script memberikan jeda selama 1 detik antar proses tiap file untuk mencegah pemblokiran oleh server.
+
+4. **Bersihkan File Sementara:**
+
+    * Script menghapus semua file teks sisa dari proses ekstraksi.
+
+5. **Pindahkan File Log dan Unduh Gambar Rahasia:**
+
+    * Script memindahkan file log (`image.log`) ke direktori utama (`$FILE_DIR`).
+    * Script menggunakan `wget` untuk mengunduh gambar yang ditemukan berdasarkan link rahasia yang tersimpan di `secret.txt`. Gambar akan disimpan dengan nama `gambar.jpg`.
+
+6. **Mulai Ulang Shell:**
+
+    * Script memulai kembali Bash shell (`exec bash`), yang pada umumnya tidak diperlukan tetapi mungkin berguna untuk keperluan debugging.
+
+**Catatan:**
+
+* Script ini mengasumsikan password untuk ekstraksi informasi dari gambar sudah diketahui.
+* Script ini bergantung pada format dan teknik steganografi yang digunakan untuk menyembunyikan link rahasia di dalam gambar.
+* Anda perlu memindahkan file gambar yang ingin diproses ke direktori `genshin_character` terlebih dahulu. Sesuaikan lokasi direktori sesuai dengan kebutuhan Anda. 
+
+
+
 ## ***SOAL 4 (Seluruh Anggota)***
 ## ***PENGERJAAN***
 ## ***PENJELASAN PENGERJAAN***
