@@ -59,10 +59,12 @@ awk -F ',' '/Adriaens/ {print "Pesanan " $6 " pada tanggal " $2 " dan sejumlah "
 ```
 wget --no-check-certificate -O Sandbox.csv 'https://drive.google.com/uc?id=1cC6MYBI3wRwDgqlFQE1OQUN83JAreId0&export=download'
 ```
+`Setelah command diatas dijalankan maka akan muncul file bernama "Sandbox.csv" yang akn tersimpan didalam direktori sesuai yang kita tuju`
 - Langkah kedua adalah mengecek/menampilkan keseleruhan isi data csv tersebut dengan memakai command 'cat' kemudian diikuti nama filenya
 ```
-cat sandbox.csv
+cat Sandbox.csv
 ```
+`Lalu setelah command diatas dijalankan maka kita akan mendapatkan output berupa seluruh isi dari file "Sandbox.csv" mulai dari kolom dan serta data_data yang lain`
 - Langkah ketiga untuk mengecek kemudian menampilkan jumlah kolom pada data yang ada pada file menggunakan command 'awk'
 ```
 awk -F ',' '{print NF; exit}' Sandbox.csv
