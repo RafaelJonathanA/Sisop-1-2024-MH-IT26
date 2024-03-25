@@ -101,4 +101,11 @@ awk -F ',' '/Adriaens/ {print "Pesanan " $6 " pada tanggal " $2 " dan sejumlah "
 `/Adriaens/ {print "Pesanan " $6 " pada tanggal " $2 " dan sejumlah " $18}' berikut akan mencari baris yang memiliki nama "Adriaens" kemudian mencetak pesanan, tanggal, dan jumlahnya ke file 1D.txt`
 
 ## *Dokumentasi*
+![Screenshot (289)](https://github.com/Rafjonath/Sisop-1-2024-MH-IT26/assets/150430084/0497e615-1f98-452a-bd2e-e0807693fa0a)
+![Screenshot (290)](https://github.com/Rafjonath/Sisop-1-2024-MH-IT26/assets/150430084/be22df14-d26d-4504-ad50-69ff4e6fdcc1)
+![Screenshot (291)](https://github.com/Rafjonath/Sisop-1-2024-MH-IT26/assets/150430084/ad10ccc7-d33d-45f3-9c84-0d32076d9100)
+![Screenshot (292)](https://github.com/Rafjonath/Sisop-1-2024-MH-IT26/assets/150430084/3ffbb1d5-fb92-4ccb-a914-4e89d6653abf)
+![Screenshot (293)](https://github.com/Rafjonath/Sisop-1-2024-MH-IT26/assets/150430084/bbf916d3-a67a-43bf-8e69-ecf47b327fad)
+![Screenshot (294)](https://github.com/Rafjonath/Sisop-1-2024-MH-IT26/assets/150430084/d4c49b63-f3a0-4731-acb5-4269b2e697a3)
+![Screenshot (295)](https://github.com/Rafjonath/Sisop-1-2024-MH-IT26/assets/150430084/d0d95151-7e0b-4268-ad81-d7a188c8543f)
 
