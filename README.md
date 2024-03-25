@@ -121,4 +121,14 @@ awk -F ',' '/Adriaens/ {print "Pesanan " $6 " pada tanggal " $2 " dan sejumlah "
 ![Screenshot (293)](https://github.com/Rafjonath/Sisop-1-2024-MH-IT26/assets/150430084/bbf916d3-a67a-43bf-8e69-ecf47b327fad)
 ![Screenshot (294)](https://github.com/Rafjonath/Sisop-1-2024-MH-IT26/assets/150430084/d4c49b63-f3a0-4731-acb5-4269b2e697a3)
 ![Screenshot (295)](https://github.com/Rafjonath/Sisop-1-2024-MH-IT26/assets/150430084/d0d95151-7e0b-4268-ad81-d7a188c8543f)
+## ***SOAL 2 (Rafael)***
+## ***PENGERJAAN***
+## ***PENJELASAN PENGERJAAN***
 
+## ***SOAL 3 (Abhinaya)***
+## ***PENGERJAAN***
+## ***PENJELASAN PENGERJAAN***
+
+## ***SOAL 4 (Seluruh Anggota)***
+## ***PENGERJAAN***
+## ***PENJELASAN PENGERJAAN***
