@@ -95,7 +95,7 @@ awk -F ',' 'NR>1{sales[$6]+=$17} END{max_sales=0; for (customer in sales) {if (s
 ```
 `(-F ',') untuk menentukan pemisah dan memproses file CSV, kemudian NR>1{sales[$6]+=$17} untuk menghitung total penjualan untuk setiap pelanggan ($6 kolom nama pelanggan dan $17 kolom dengan jumlah penjualan), lalu END{max_sales=0; for... akan membaca dan mencari pelanggan dengan total penjualan tertinggi dan mencetaknya ke file 1A.txt`
 
-b. Tampilkan customer segment yang memiliki profit paling kecil
+b. Tampilkan customer segment yang memiliki profit paling kecil (REVISI)
 ```
 awk -F ',' 'NR>1{profit[$7]+=$20} END{min_profit=1000000; segment_terkecil=""; for (segment in profit) {if (profit[segment]<min_profit) {min_profit=profit[segment]; segment_terkecil=segment}} print "Customer segment dengan profit terkecil adalah:", segment_terkecil, "dengan profit sebesar", min_profit}' Sandbox.csv > 1B.txt
 
@@ -888,7 +888,7 @@ Skrip ini mencari link rahasia yang disembunyikan di dalam file gambar menggunak
 * Script ini bergantung pada format dan teknik steganografi yang digunakan untuk menyembunyikan link rahasia di dalam gambar.
 * Anda perlu memindahkan file gambar yang ingin diproses ke direktori `genshin_character` terlebih dahulu. Sesuaikan lokasi direktori sesuai dengan kebutuhan Anda. 
 
-## ***SOAL 4 (TIDAK DAPAT DIKERJAKAN KARENA KAMI 1 KELOMPOK TIDAK MENGERTI UNTUK MENGERJAKAN SOAL TERSEBUT)***
+## ***SOAL 4 (REVISI ALL)***
 Stitch sangat senang dengan PC di rumahnya. Suatu hari, PC nya secara tiba-tiba nge-freeze 🤯 Tentu saja, Stitch adalah seorang streamer yang harus setiap hari harus bermain game dan streaming.  Akhirnya, dia membawa PC nya ke tukang servis untuk diperbaiki. Setelah selesai diperbaiki, ternyata biaya perbaikan sangat mahal sehingga dia harus menggunakan uang hasil tabungan nya untuk membayarnya. Menurut tukang servis, masalahnya adalah pada CPU dan GPU yang overload karena gaming dan streaming sehingga mengakibatkan freeze pada PC nya. Agar masalah ini tidak terulang kembali, Stitch meminta kamu untuk membuat sebuah program monitoring resource yang tersedia pada komputer.
 
 Buatlah program monitoring resource pada PC kalian. Cukup monitoring ram dan monitoring size suatu directory. Untuk ram gunakan command `free -m`. Untuk disk gunakan command `du -sh <target_path>`. Catat semua metrics yang didapatkan dari hasil `free -m`. Untuk hasil `du -sh <target_path>` catat size dari path directory tersebut. Untuk target_path yang akan dimonitor adalah /home/{user}/. 
@@ -912,3 +912,180 @@ mem_total,mem_used,mem_free,mem_shared,mem_buff,mem_available,swap_total,swap_us
 
 Berikut adalah contoh isi dari file aggregasi yang dijalankan tiap jam:
 type,mem_total,mem_used,mem_free,mem_shared,mem_buff,mem_available,swap_total,swap_used,swap_free,path,path_size minimum,15949,10067,223,588,5339,4626,2047,43,1995,/home/user/coba/,50M maximum,15949,10387,308,622,5573,4974,2047,52,2004,/home/user/coba/,74M average,15949,10227,265.5,605,5456,4800,2047,47.5,1999.5,/home/user/coba/,62M
+
+## ***PENGERJAAN***
+### minute_log.sh
+#!/bin/bash
+
+log_file="/home/ubuntu/log/metrics_$(date +'%Y%m%d%H%M%S').log"
+
+echo "mem_total,mem_used,mem_free,mem_shared,mem_buff,mem_available,swap_total,swap_used,swap_free,path,path_size" > "$log_file"
+
+ram_info=$(free -m | awk 'NR==2 {print $2","$3","$4","$5","$6","$7}')
+swap_info=$(free -m | awk 'NR==3 {print $2","$3","4}') 
+
+target_path="/home/ubuntu/coba"
+path_size=$(du -sh "$target_path" | awk '{print $1}')
+
+echo "$ram_info,$swap_info,$target_path,$path_size" >> "$log_file"
+chmod +x $log_file 
+
+# Konfigurasi cron untuk menjalankan skrip ini setiap menit
+# * * * * * /home/ubuntu/SISOP/soal_4/minute_log.sh
+
+### aggregate_minutes_to_hourly_log.sh
+#!/bin/bash
+
+log_dir="/home/ubuntu/log"
+minute_log_file="$log_dir/metrics_$(date +'%Y%m%d%H').log"
+hourly_log_file="$log_dir/metrics_agg_$(date +'%Y%m%d%H').log"
+
+mkdir -p $log_dir
+
+min_ram_total=
+min_ram_used=
+min_ram_free=
+min_ram_shared=
+min_ram_buff=
+min_ram_available=
+max_ram_total=
+max_ram_used=
+max_ram_free=
+max_ram_shared=
+max_ram_buff=
+max_ram_available=
+sum_ram_total=0
+sum_ram_used=0
+sum_ram_free=0
+sum_ram_shared=0
+sum_ram_buff=0
+sum_ram_available=0
+count=0
+
+min_swap_total=
+min_swap_used=
+min_swap_free=
+max_swap_total=
+max_swap_used=
+max_swap_free=
+sum_swap_total=0
+sum_swap_used=0
+sum_swap_free=0
+
+min_disk_size=
+max_disk_size=
+sum_disk_size=0
+
+for file in $log_dir/*.log; do
+    # Read the second line of the file
+    metrics=$(sed -n '2p' "$file")
+
+    # Extract individual metrics
+    IFS=',' read -r mem_total mem_used mem_free mem_shared mem_buff mem_available swap_total swap_used swap_free path path_size <<< "$metrics"
+
+    # Update RAM metrics
+    if [[ -z $min_ram_total || $mem_total -lt $min_ram_total ]]; then
+        min_ram_total=$mem_total
+    fi
+    if [[ -z $min_ram_used || $mem_used -lt $min_ram_used ]]; then
+        min_ram_used=$mem_used
+    fi
+    if [[ -z $min_ram_free || $mem_free -lt $min_ram_free ]]; then
+        min_ram_free=$mem_free
+    fi
+    if [[ -z $min_ram_shared || $mem_shared -lt $min_ram_shared ]]; then
+        min_ram_shared=$mem_shared
+    fi
+    if [[ -z $min_ram_buff || $mem_buff -lt $min_ram_buff ]]; then
+        min_ram_buff=$mem_buff
+    fi
+    if [[ -z $min_ram_available || $mem_available -lt $min_ram_available ]]; then
+        min_ram_available=$mem_available
+    fi
+
+    if [[ -z $max_ram_total || $mem_total -gt $max_ram_total ]]; then
+        max_ram_total=$mem_total
+    fi
+    if [[ -z $max_ram_used || $mem_used -gt $max_ram_used ]]; then
+        max_ram_used=$mem_used
+    fi
+    if [[ -z $max_ram_free || $mem_free -gt $max_ram_free ]]; then
+        max_ram_free=$mem_free
+    fi
+    if [[ -z $max_ram_shared || $mem_shared -gt $max_ram_shared ]]; then
+        max_ram_shared=$mem_shared
+    fi
+    if [[ -z $max_ram_buff || $mem_buff -gt $max_ram_buff ]]; then
+        max_ram_buff=$mem_buff
+    fi
+    if [[ -z $max_ram_available || $mem_available -gt $max_ram_available ]]; then
+        max_ram_available=$mem_available
+    fi
+
+    ((sum_ram_total += mem_total))
+    ((sum_ram_used += mem_used))
+    ((sum_ram_free += mem_free))
+    ((sum_ram_shared += mem_shared))
+    ((sum_ram_buff += mem_buff))
+    ((sum_ram_available += mem_available))
+
+    # Update Swap metrics
+    if [[ -z $min_swap_total || $swap_total -lt $min_swap_total ]]; then
+        min_swap_total=$swap_total
+    fi
+    if [[ -z $min_swap_used || $swap_used -lt $min_swap_used ]]; then
+        min_swap_used=$swap_used
+    fi
+    if [[ -z $min_swap_free || $swap_free -lt $min_swap_free ]]; then
+        min_swap_free=$swap_free
+    fi
+
+    if [[ -z $max_swap_total || $swap_total -gt $max_swap_total ]]; then
+        max_swap_total=$swap_total
+    fi
+    if [[ -z $max_swap_used || $swap_used -gt $max_swap_used ]]; then
+        max_swap_used=$swap_used
+    fi
+    if [[ -z $max_swap_free || $swap_free -gt $max_swap_free ]]; then
+        max_swap_free=$swap_free
+    fi
+
+    ((sum_swap_total += swap_total))
+    ((sum_swap_used += swap_used))
+    ((sum_swap_free += swap_free))
+
+    # Update Disk metrics
+    disk_size="${path_size//[!0-9]/}"
+    if [[ -z $min_disk_size || $disk_size -lt $min_disk_size ]]; then
+        min_disk_size=$disk_size
+    fi
+    if [[ -z $max_disk_size || $disk_size -gt $max_disk_size ]]; then
+        max_disk_size=$disk_size
+    fi
+    ((sum_disk_size += disk_size))
+
+    ((count++))
+done
+
+avg_ram_total=$(bc <<< "scale=2; $sum_ram_total / $count")
+avg_ram_used=$(bc <<< "scale=2; $sum_ram_used / $count")
+avg_ram_free=$(bc <<< "scale=2; $sum_ram_free / $count")
+avg_ram_shared=$(bc <<< "scale=2; $sum_ram_shared / $count")
+avg_ram_buff=$(bc <<< "scale=2; $sum_ram_buff / $count")
+avg_ram_available=$(bc <<< "scale=2; $sum_ram_available / $count")
+
+avg_swap_total=$(bc <<< "scale=2; $sum_swap_total / $count")
+avg_swap_used=$(bc <<< "scale=2; $sum_swap_used / $count")
+avg_swap_free=$(bc <<< "scale=2; $sum_swap_free / $count")
+
+avg_disk_size=$(bc <<< "scale=2; $sum_disk_size / $count")
+
+echo "type,mem_total,mem_used,mem_free,mem_shared,mem_buff,mem_available,swap_total,swap_used,swap_free,path,path_size" > $hourly_log_file
+echo "maximum,$max_ram_total,$max_ram_used,$max_ram_free,$max_ram_shared,$max_ram_buff,$max_ram_available,$max_swap_total,$max_swap_used,$max_swap_free,/home/ubuntu,$max_disk_size" >> $hourly_log_file
+echo "minimum,$min_ram_total,$min_ram_used,$min_ram_free,$min_ram_shared,$min_ram_buff,$min_ram_available,$min_swap_total,$min_swap_used,$min_swap_free,/home/ubuntu,$min_disk_size" >> $hourly_log_file
+echo "average,$avg_ram_total,$avg_ram_used,$avg_ram_free,$avg_ram_shared,$avg_ram_buff,$avg_ram_available,$avg_swap_total,$avg_swap_used,$avg_swap_free,/home/ubuntu,$avg_disk_size" >> $hourly_log_file
+
+chmod 600 $hourly_log_file
+
+# Konfigurasi cron untuk menjalankan skrip ini setiap jam
+# 0 * * * * /home/ubuntu/SISOP/soal_4/aggregate_minutes_to_hourly_log.sh
