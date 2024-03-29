@@ -59,7 +59,7 @@ head -n 1 Sandbox.csv
 
 awk -F ',' 'NR>1{sales[$6]+=$17} END{max_sales=0; for (customer in sales) {if (sales[customer] > max_sales) {max_sales = sales[customer]; max_customer = customer}} print "Customer dengan total sales tertinggi adalah " max_customer ", yaitu dengan total sales sebesar " max_sales}' Sandbox.csv > 1A.txt
 
-awk -F ',' '{print $7",",$20}' Sandbox.csv | sort -t ',' -k2,2n | head -n 2 | tail -n 1 | awk '{print "Customer segment yang memiliki profit paling kecil adalah:", $1, "dengan profit sebesar", $2}' > 1B.txt
+awk -F ',' 'NR>1{profit[$7]+=$20} END{min_profit=1000000; segment_terkecil=""; for (segment in profit) {if (profit[segment]<min_profit) {min_profit=profit[segment]; segment_terkecil=segment}} print "Customer segment dengan profit terkecil adalah:", segment_terkecil, "dengan profit sebesar", min_profit}' Sandbox.csv > 1B.txt
 
 awk -F ',' 'NR > 1 {sum[$14]+=$20} END {print "Profit 3 tertinggi diantara seluruh category"; for (category in sum) print category ", " sum[category] }' Sandbox.csv  > 1C.txt
 
@@ -97,9 +97,10 @@ awk -F ',' 'NR>1{sales[$6]+=$17} END{max_sales=0; for (customer in sales) {if (s
 
 b. Tampilkan customer segment yang memiliki profit paling kecil
 ```
-awk -F ',' '{print $7",",$20}' Sandbox.csv | sort -t ',' -k2,2n | head -n 2 | tail -n 1 | awk '{print "Customer segment yang memiliki profit paling kecil adalah:", $1, "dengan profit sebesar", $2}' > 1B.txt
+awk -F ',' 'NR>1{profit[$7]+=$20} END{min_profit=1000000; segment_terkecil=""; for (segment in profit) {if (profit[segment]<min_profit) {min_profit=profit[segment]; segment_terkecil=segment}} print "Customer segment dengan profit terkecil adalah:", segment_terkecil, "dengan profit sebesar", min_profit}' Sandbox.csv > 1B.txt
+
 ```
-`{print $7",",$20} akan mencetak kolom ke-7 (pelanggan) dan kolom ke-20 (profit) dari file CSV, kemudian sort -t ',' -k2,2n  mengurutkan baris berdasarkan kolom ke-2 (profit), head -n 2 | tail -n 1 mengambil baris kedua dari hasil pengurutan yaitu baris dengan profit terkecil, kemudian print... akan mencetaknya dan menyimpan di file 1B.txt`
+`{print $7",",$20} akan mencetak kolom ke-7 (pelanggan) dan kolom ke-20 (profit) dari file CSV, kemudian END{min_profit=1000000; segment_terkecil=""; for... untuk untuk mencari nilai profit terkecil dan nama segmen yang sesuai. Jika nilai profit suatu segmen lebih kecil dari min_profit akan diperbarui nilai min_profit dan segment_terkecil yang sesuai, kemudian print... akan mencetaknya dan menyimpan di file 1B.txt`
 
 c. Tampilkan 3 category yang memiliki total profit paling tinggi 
 ```
@@ -118,7 +119,7 @@ awk -F ',' '/Adriaens/ {print "Pesanan " $6 " pada tanggal " $2 " dan sejumlah "
 ![Screenshot (290)](https://github.com/Rafjonath/Sisop-1-2024-MH-IT26/assets/150430084/be22df14-d26d-4504-ad50-69ff4e6fdcc1)
 ![Screenshot (291)](https://github.com/Rafjonath/Sisop-1-2024-MH-IT26/assets/150430084/ad10ccc7-d33d-45f3-9c84-0d32076d9100)
 ![Screenshot (292)](https://github.com/Rafjonath/Sisop-1-2024-MH-IT26/assets/150430084/3ffbb1d5-fb92-4ccb-a914-4e89d6653abf)
-![Screenshot (293)](https://github.com/Rafjonath/Sisop-1-2024-MH-IT26/assets/150430084/bbf916d3-a67a-43bf-8e69-ecf47b327fad)
+![Screenshot (309)](https://github.com/Rafjonath/Sisop-1-2024-MH-IT26/assets/150430084/3096e169-fa51-4547-a0b1-c947de33d49f)
 ![Screenshot (294)](https://github.com/Rafjonath/Sisop-1-2024-MH-IT26/assets/150430084/d4c49b63-f3a0-4731-acb5-4269b2e697a3)
 ![Screenshot (295)](https://github.com/Rafjonath/Sisop-1-2024-MH-IT26/assets/150430084/d0d95151-7e0b-4268-ad81-d7a188c8543f)
 
