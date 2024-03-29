@@ -14,4 +14,4 @@ echo "$ram_info,$swap_info,$target_path,$path_size" >> "$log_file"
 chmod +x $log_file 
 
 # Konfigurasi cron untuk menjalankan skrip ini setiap menit
-# * * * * * /bash /home/ubuntu/SISOP/soal_4/minute_log.sh
+# * * * * * /home/ubuntu/SISOP/soal_4/minute_log.sh
