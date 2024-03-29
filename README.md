@@ -1138,13 +1138,24 @@ chmod +x $log_file
 
 ## *Membuat satu script untuk membuat agregasi file log ke satuan jam. Script agregasi akan memiliki info dari file-file yang tergenerate tiap menit. Dalam hasil file agregasi tersebut, terdapat nilai minimum, maximum, dan rata-rata dari tiap-tiap metrics. File agregasi akan ditrigger untuk dijalankan setiap jam secara otomatis*
 
+- direktori di mana file log akan disimpan
 ```
 log_dir="/home/ubuntu/log"
+```
+- path ke file log yang menyimpan data per menit. Nama file didasarkan pada tanggal dan jam saat ini dalam format YYYYMMDDHH
+```
 minute_log_file="$log_dir/metrics_$(date +'%Y%m%d%H').log"
+```
+- path ke file log yang akan berisi data agregat per jam. Nama file juga didasarkan pada tanggal dan jam saat ini dalam format YYYYMMDDHH
+```
 hourly_log_file="$log_dir/metrics_agg_$(date +'%Y%m%d%H').log"
-
+```
+-membuat direktori log jika belum ada
+```
 mkdir -p $log_dir
-
+```
+- variabel yang diinisialisasi untuk menyimpan metrik RAM, swap, dan disk. Metrik ini akan digunakan untuk menghitung nilai minimum, maksimum, dan rata-rata
+```
 min_ram_total=
 min_ram_used=
 min_ram_free=
@@ -1178,11 +1189,15 @@ sum_swap_free=0
 min_disk_size=
 max_disk_size=
 sum_disk_size=0
-
+```
+- loop for untuk membaca file log yang tersedia di direktori log. Di dalam loop, baris kedua dari setiap file log dibaca menggunakan sed -n '2p' "$file". Kemudian, data tersebut dipecah menjadi metrik individual menggunakan perintah read
+```
 for file in $log_dir/*.log; do
 
     metrics=$(sed -n '2p' "$file")
-
+```
+- setiap metrik kemudian dibandingkan untuk menemukan nilai minimum dan maksimum, serta digabungkan untuk menghitung rata-rata
+```
     IFS=',' read -r mem_total mem_used mem_free mem_shared mem_buff mem_available swap_total swap_used swap_free path path_size <<< "$metrics"
 
     if [[ -z $min_ram_total || $mem_total -lt $min_ram_total ]]; then
@@ -1265,7 +1280,6 @@ for file in $log_dir/*.log; do
 
     ((count++))
 done
-
 avg_ram_total=$(bc <<< "scale=2; $sum_ram_total / $count")
 avg_ram_used=$(bc <<< "scale=2; $sum_ram_used / $count")
 avg_ram_free=$(bc <<< "scale=2; $sum_ram_free / $count")
@@ -1278,14 +1292,21 @@ avg_swap_used=$(bc <<< "scale=2; $sum_swap_used / $count")
 avg_swap_free=$(bc <<< "scale=2; $sum_swap_free / $count")
 
 avg_disk_size=$(bc <<< "scale=2; $sum_disk_size / $count")
-
+```
+- setelah loop selesai, metrik agregat diprint ke file log
+```
 echo "type,mem_total,mem_used,mem_free,mem_shared,mem_buff,mem_available,swap_total,swap_used,swap_free,path,path_size" > $hourly_log_file
 echo "maximum,$max_ram_total,$max_ram_used,$max_ram_free,$max_ram_shared,$max_ram_buff,$max_ram_available,$max_swap_total,$max_swap_used,$max_swap_free,/home/ubuntu,$max_disk_size" >> $hourly_log_file
 echo "minimum,$min_ram_total,$min_ram_used,$min_ram_free,$min_ram_shared,$min_ram_buff,$min_ram_available,$min_swap_total,$min_swap_used,$min_swap_free,/home/ubuntu,$min_disk_size" >> $hourly_log_file
 echo "average,$avg_ram_total,$avg_ram_used,$avg_ram_free,$avg_ram_shared,$avg_ram_buff,$avg_ram_available,$avg_swap_total,$avg_swap_used,$avg_swap_free,/home/ubuntu,$avg_disk_size" >> $hourly_log_file
-
+```
+-untuk memberikan izin pada file log
+```
 chmod 600 $hourly_log_file
-
+```
+- konfigurasi cron yang diperlukan untuk menjalankan skrip ini setiap jam.
+```
 # Konfigurasi cron untuk menjalankan skrip ini setiap jam
 # 0 * * * * /home/ubuntu/SISOP/soal_4/aggregate_minutes_to_hourly_log.sh
 ```
+## *Dokumentasi*
