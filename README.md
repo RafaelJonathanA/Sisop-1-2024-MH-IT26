@@ -1094,3 +1094,45 @@ chmod 600 $hourly_log_file
 # Konfigurasi cron untuk menjalankan skrip ini setiap jam
 # 0 * * * * /home/ubuntu/SISOP/soal_4/aggregate_minutes_to_hourly_log.sh
 ```
+## ***PENJELASAN PENGERJAAN***
+```
+#!/bin/bash
+```
+- Variabel log_file diinisialisasi dengan path file log yang akan dibuat. Nama file akan berisi tanggal dan waktu saat ini dalam format YYYYMMDDHHMMSS.
+```
+log_file="/home/ubuntu/log/metrics_$(date +'%Y%m%d%H%M%S').log"
+```
+- Menulis header kolom ke file log yang sudah diinisialisasi sebelumnya.
+```
+echo "mem_total,mem_used,mem_free,mem_shared,mem_buff,mem_available,swap_total,swap_used,swap_free,path,path_size" > "$log_file"
+```
+-
+ram_info=... untuk mendapatkan informasi tentang RAM. Outputnya diproses oleh awk untuk mendapatkan nilai yang sesuai, lalu disimpan dalam variabel ram_info.
+
+swap_info=... untuk mendapatkan informasi tentang swap. Outputnya diproses oleh awk untuk mendapatkan nilai yang sesuai, lalu disimpan dalam variabel swap_info.
+```
+ram_info=$(free -m | awk 'NR==2 {print $2","$3","$4","$5","$6","$7}')
+swap_info=$(free -m | awk 'NR==3 {print $2","$3","4}') 
+```
+-target_path=... menetapkan path direktori yang akan diamati.
+
+path_size=... menjalankan perintah du -sh untuk mendapatkan ukuran direktori target. Outputnya diproses oleh awk untuk mendapatkan ukuran dalam format yang sesuai, lalu disimpan dalam variabel path_size.
+
+```
+target_path="/home/ubuntu/coba"
+path_size=$(du -sh "$target_path" | awk '{print $1}')
+```
+-echo "$ram_info ... menulisksan informasi RAM, swap, path, dan ukuran path ke file log yang sudah diinisialisasi sebelumnya.
+
+chmod +x $log_file akan memberikan izin eksekusi pada file log.
+```
+echo "$ram_info,$swap_info,$target_path,$path_size" >> "$log_file"
+chmod +x $log_file 
+```
+- menjelaskan konfigurasi cron akan ditambahkan
+
+* * * * * /home/ubuntu/SISOP/soal_4/minute_log.sh adalah konfigurasi cron yang akan menjalankan skrip ini setiap menit
+```
+# Konfigurasi cron untuk menjalankan skrip ini setiap menit
+# * * * * * /home/ubuntu/SISOP/soal_4/minute_log.sh
+```
