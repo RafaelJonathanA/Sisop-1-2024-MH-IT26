@@ -915,6 +915,7 @@ type,mem_total,mem_used,mem_free,mem_shared,mem_buff,mem_available,swap_total,sw
 
 ## ***PENGERJAAN***
 ### minute_log.sh
+```
 #!/bin/bash
 
 log_file="/home/ubuntu/log/metrics_$(date +'%Y%m%d%H%M%S').log"
@@ -932,8 +933,11 @@ chmod +x $log_file
 
 # Konfigurasi cron untuk menjalankan skrip ini setiap menit
 # * * * * * /home/ubuntu/SISOP/soal_4/minute_log.sh
+```
 
 ### aggregate_minutes_to_hourly_log.sh
+
+```
 #!/bin/bash
 
 log_dir="/home/ubuntu/log"
@@ -1089,3 +1093,4 @@ chmod 600 $hourly_log_file
 
 # Konfigurasi cron untuk menjalankan skrip ini setiap jam
 # 0 * * * * /home/ubuntu/SISOP/soal_4/aggregate_minutes_to_hourly_log.sh
+```
