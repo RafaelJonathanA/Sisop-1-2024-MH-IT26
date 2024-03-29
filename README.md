@@ -1300,7 +1300,7 @@ echo "maximum,$max_ram_total,$max_ram_used,$max_ram_free,$max_ram_shared,$max_ra
 echo "minimum,$min_ram_total,$min_ram_used,$min_ram_free,$min_ram_shared,$min_ram_buff,$min_ram_available,$min_swap_total,$min_swap_used,$min_swap_free,/home/ubuntu,$min_disk_size" >> $hourly_log_file
 echo "average,$avg_ram_total,$avg_ram_used,$avg_ram_free,$avg_ram_shared,$avg_ram_buff,$avg_ram_available,$avg_swap_total,$avg_swap_used,$avg_swap_free,/home/ubuntu,$avg_disk_size" >> $hourly_log_file
 ```
--untuk memberikan izin pada file log
+- memberikan izin pada file log
 ```
 chmod 600 $hourly_log_file
 ```
