@@ -1183,6 +1183,7 @@ exec bash
 ![Screenshot from 2024-03-30 19-22-22](https://github.com/Rafjonath/Sisop-1-2024-MH-IT26/assets/123524655/643e9182-3995-48f1-b2e7-1702499f3393)
 ![Screenshot from 2024-03-30 19-22-36](https://github.com/Rafjonath/Sisop-1-2024-MH-IT26/assets/123524655/8e2fb546-515b-4083-af19-c6d4b1aa3059)
 ![Screenshot from 2024-03-30 19-22-55](https://github.com/Rafjonath/Sisop-1-2024-MH-IT26/assets/123524655/1adfa8d1-d528-4771-a129-a54316ba5599)
+![Screenshot from 2024-03-30 19-25-56](https://github.com/Rafjonath/Sisop-1-2024-MH-IT26/assets/123524655/acb35bd1-1750-422b-83a6-f79b6b15d438)
 
 ## ***SOAL 4 (REVISI ALL)***
 Stitch sangat senang dengan PC di rumahnya. Suatu hari, PC nya secara tiba-tiba nge-freeze 🤯 Tentu saja, Stitch adalah seorang streamer yang harus setiap hari harus bermain game dan streaming.  Akhirnya, dia membawa PC nya ke tukang servis untuk diperbaiki. Setelah selesai diperbaiki, ternyata biaya perbaikan sangat mahal sehingga dia harus menggunakan uang hasil tabungan nya untuk membayarnya. Menurut tukang servis, masalahnya adalah pada CPU dan GPU yang overload karena gaming dan streaming sehingga mengakibatkan freeze pada PC nya. Agar masalah ini tidak terulang kembali, Stitch meminta kamu untuk membuat sebuah program monitoring resource yang tersedia pada komputer.
