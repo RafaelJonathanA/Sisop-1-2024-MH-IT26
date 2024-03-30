@@ -95,7 +95,7 @@ awk -F ',' 'NR>1{sales[$6]+=$17} END{max_sales=0; for (customer in sales) {if (s
 ```
 `(-F ',') untuk menentukan pemisah dan memproses file CSV, kemudian NR>1{sales[$6]+=$17} untuk menghitung total penjualan untuk setiap pelanggan ($6 kolom nama pelanggan dan $17 kolom dengan jumlah penjualan), lalu END{max_sales=0; for... akan membaca dan mencari pelanggan dengan total penjualan tertinggi dan mencetaknya ke file 1A.txt`
 
-b. Tampilkan customer segment yang memiliki profit paling kecil (REVISI)
+b. Tampilkan customer segment yang memiliki profit paling kecil (REVISI SALAH OUTPUT)
 ```
 awk -F ',' 'NR>1{profit[$7]+=$20} END{min_profit=1000000; segment_terkecil=""; for (segment in profit) {if (profit[segment]<min_profit) {min_profit=profit[segment]; segment_terkecil=segment}} print "Customer segment dengan profit terkecil adalah:", segment_terkecil, "dengan profit sebesar", min_profit}' Sandbox.csv > 1B.txt
 
