@@ -763,6 +763,14 @@ Dengan kode diatas maka setiap kali ada register yang berhasil ataupun gagal aka
 
 ## *Dokumentasi*
 
+![Register sh](https://github.com/Rafjonath/Sisop-1-2024-MH-IT26/assets/150375098/7ffa3742-7d88-4509-a0e2-90c5b0b18e7a)
+![Login user](https://github.com/Rafjonath/Sisop-1-2024-MH-IT26/assets/150375098/84a0870d-0b4f-442d-b4ff-a103c8628bb3)
+![Lupa pass,login user registe](https://github.com/Rafjonath/Sisop-1-2024-MH-IT26/assets/150375098/ea2270aa-45e3-41b8-ba13-04808ba58353)
+![Tampilan admin](https://github.com/Rafjonath/Sisop-1-2024-MH-IT26/assets/150375098/dc0524fc-95c7-445e-a0eb-efc8f98d4b97)
+![Admin 1 dan 2](https://github.com/Rafjonath/Sisop-1-2024-MH-IT26/assets/150375098/f07ba785-cf79-41a7-a159-823661c56ab9)
+![admin 3 dan 4](https://github.com/Rafjonath/Sisop-1-2024-MH-IT26/assets/150375098/351ab9ed-df6b-451e-bae6-8c99e4375ba2)
+![Tampilan log](https://github.com/Rafjonath/Sisop-1-2024-MH-IT26/assets/150375098/e68382d0-d04b-4f61-b9cf-1ac3dbe825eb)
+
 ## ***SOAL 3 (Abhinaya)***
 **Projek: Pengatur Gambar Karakter Genshin**
 
