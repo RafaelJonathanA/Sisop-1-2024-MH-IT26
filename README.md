@@ -405,10 +405,14 @@ register_user "$email" "$username" "$security_question" "$answer" "$password"
 ```
 
 ## ***PENJELASAN PENGERJAAN***
--p digunakan untuk menampilkan pesan prompt
-sed -i digunakan untuk memanipulasi teks dalam sebuah file 
--sp digunakan untuk menampilkan pesan prompt serta membuat inputan pengguna tidak terlihat di layar
-cut digunakan untuk memotong inputan sebuah file dengan -d sebagai pemisahnya dan -f sebagai pemotong dari kolom berapa yang ingin ditampilkan
+###### -p 
+digunakan untuk menampilkan pesan prompt
+###### sed -i 
+digunakan untuk memanipulasi teks dalam sebuah file 
+###### -sp 
+digunakan untuk menampilkan pesan prompt serta membuat inputan pengguna tidak terlihat di layar
+###### cut 
+digunakan untuk memotong inputan sebuah file dengan -d sebagai pemisahnya dan -f sebagai pemotong dari kolom berapa yang ingin ditampilkan
 
 ## Soal No.2 
 Oppie merupakan seorang peneliti bom atom, ia ingin merekrut banyak peneliti lain untuk mengerjakan proyek bom atom nya, Oppie memiliki racikan bom atom rahasia yang hanya bisa diakses penelitinya yang akan diidentifikasi sebagai user, Oppie juga memiliki admin yang bertugas untuk memanajemen peneliti,  bantulah oppie untuk membuat program yang akan memudahkan tugasnya 
@@ -1111,11 +1115,16 @@ chmod 600 $hourly_log_file
 ```
 ## ***PENJELASAN PENGERJAAN***
 
-bc digunakan agar perhitungan dari aritmatika bisa 2 angka di belakang koma
--z digunakan untuk menguji apakah string tersebut kosong atau tidak
-[-p] digunakan untuk memeriksa apakah file ada dan dapat diakses
-IFS digunakan untuk menentukan pemisah karakter
-sed -n diguanakan untuk menampilkan output yang dipilih dan yang lain diabaikan 
+###### bc 
+digunakan agar perhitungan dari aritmatika bisa 2 angka di belakang koma
+###### -z 
+digunakan untuk menguji apakah string tersebut kosong atau tidak
+###### [-p] 
+digunakan untuk memeriksa apakah file ada dan dapat diakses
+###### IFS 
+digunakan untuk menentukan pemisah karakter
+###### sed -n 
+diguanakan untuk menampilkan output yang dipilih dan yang lain diabaikan 
 
 ## *Membuat metrics ke dalam suatu file log bernama metrics yang akan berjalan otomatis tiap menit*
 
