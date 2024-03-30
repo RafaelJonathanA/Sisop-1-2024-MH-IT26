@@ -11,7 +11,7 @@
 + Soal 1 = Danendra Fidel Khansa
 + Soal 2 = Rafael Jonathan Arnoldus
 + Soal 3 = Muhammad Abhinaya Al-Faruqi
-+ Soal 4 = Tidak dikerjakan
++ Soal 4 = Revisi ALL
 
 ## ***MODUL 1***
   Berikut untuk struktur repository pengumpulan dari hasil praktikum sistem operasi modul 1 :
