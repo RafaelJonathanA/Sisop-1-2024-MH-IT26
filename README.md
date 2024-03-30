@@ -784,9 +784,108 @@ Dengan kode diatas maka setiap kali ada register yang berhasil ataupun gagal aka
 
 
 ## ***SOAL 3 (Abhinaya)***
-**Projek: Pengatur Gambar Karakter Genshin**
+Alyss adalah seorang gamer yang sangat menyukai bermain game Genshin Impact. Karena hobinya, dia ingin mengoleksi foto-foto karakter Genshin Impact. Suatu saat Yanuar memberikannya sebuah Link yang berisi koleksi kumpulan foto karakter dan sebuah clue yang mengarah ke penemuan gambar rahasia. Ternyata setiap nama file telah dienkripsi dengan menggunakan hexadecimal. Karena penasaran dengan apa yang dikatakan Yanuar, Alyss tidak menyerah dan mencoba untuk mengembalikan nama file tersebut kembali seperti semula.
+a. Alyss membuat script bernama awal.sh, untuk download file yang diberikan oleh Yanuar dan unzip terhadap file yang telah diunduh dan decode setiap nama file yang terenkripsi dengan hex . Karena pada file list_character.csv terdapat data lengkap karakter, Alyss ingin merename setiap file berdasarkan file tersebut. Agar semakin rapi, Alyss mengumpulkan setiap file ke dalam folder berdasarkan region tiap karakter
+* Format: Region - Nama - Elemen - Senjata.jpg
+
+b. Karena tidak mengetahui jumlah pengguna dari tiap senjata yang ada di folder "genshin_character".Alyss berniat untuk menghitung serta menampilkan jumlah pengguna untuk setiap senjata yang ada
+* Format: [Nama Senjata] : [jumlah]
+	 Untuk menghemat penyimpanan. Alyss menghapus file - file yang tidak ia gunakan, yaitu genshin_character.zip, list_character.csv, dan genshin.zip
+
+c. Namun sampai titik ini Alyss masih belum menemukan clue dari the secret picture yang disinggung oleh Yanuar. Dia berpikir keras untuk menemukan pesan tersembunyi tersebut. Alyss membuat script baru bernama search.sh untuk melakukan pengecekan terhadap setiap file tiap 1 detik. Pengecekan dilakukan dengan cara meng-ekstrak sebuah value dari setiap gambar dengan menggunakan command steghide. Dalam setiap gambar tersebut, terdapat sebuah file txt yang berisi string. Alyss kemudian mulai melakukan dekripsi dengan hex pada tiap file txt dan mendapatkan sebuah url. Setelah mendapatkan url yang ia cari, Alyss akan langsung menghentikan program search.sh serta mendownload file berdasarkan url yang didapatkan.
+
+d.Dalam prosesnya, setiap kali Alyss melakukan ekstraksi dan ternyata hasil ekstraksi bukan yang ia inginkan, maka ia akan langsung menghapus file txt tersebut. Namun, jika itu merupakan file txt yang dicari, maka ia akan menyimpan hasil dekripsi-nya bukan hasil ekstraksi. Selain itu juga, Alyss melakukan pencatatan log pada file image.log untuk setiap pengecekan gambar
+* Format: [date] [type] [image_path]
+* Ex: 
+1. [24/03/20 17:18:19] [NOT FOUND] [image_path]
+2. [24/03/20 17:18:20] [FOUND] [image_path]
+
+e. Hasil akhir:
+* genshin_character
+* search.sh
+* awal.sh
+* image.log
+* [filename].txt
+* [image].jpg
+
+## ***PENGERJAAN***
+**Pengorganisasian File Genshin Character**
 
 Skrip ini mengotomatiskan pengorganisasian gambar karakter Genshin yang diunduh dan informasi terkaitnya.
+
+**awal.sh**
+```
+#!/bin/bash
+
+FILE_DIR="/home/$USER/praktikum_tka_no.2"
+
+if [ -d $FILE_DIR ]; then
+  echo "directory exist."
+else
+  mkdir $FILE_DIR
+fi
+
+cd $FILE_DIR
+
+wget -q --no-check-certificate 'https://docs.google.com/uc?export=download&id=1oGHdTf4_76_RacfmQIV4i7os4sGwa9vN' -O genshin.zip
+
+unzip -q genshin.zip
+unzip -q genshin_character.zip
+
+if [ -d genshin_character ]; then
+  cd genshin_character
+else
+  echo "Error: genshin_character directory not found after unzipping."
+  exit 1
+fi
+
+for file in *.jpg; do
+  new_name=$(echo "$file" | xxd -p -r)
+  mv "$file" "$new_name".jpg
+done
+
+dos2unix $FILE_DIR/list_character.csv
+
+while IFS="," read -r col1 col2 col3 col4; do
+  for file in *.jpg; do
+    if [ "$file" == "$col1".jpg ]; then
+      mv "$file" "$col2 - $col1 - $col3 - $col4".jpg
+    fi
+  done
+done < $FILE_DIR/list_character.csv
+
+
+for file in *.jpg; do 
+  dir_name=$(echo "$file" | cut -d "-" -f1)
+  if [ -d $dir_name ]; then
+    cp "$file" $FILE_DIR/genshin_character/$dir_name
+  else
+    mkdir $dir_name
+    cp "$file" $FILE_DIR/genshin_character/$dir_name
+  fi
+done
+
+claymore=$(ls | grep -o "Claymore" | wc -l)
+echo "Claymore : $claymore"
+
+sword=$(ls | grep -o "Sword" | wc -l)
+echo "Sword : $sword"
+
+polearm=$(ls | grep -o "Polearm" | wc -l)
+echo "Polearm : $polearm"
+
+catalyst=$(ls | grep -o "Catalyst" | wc -l)
+echo "Catalyst : $catalyst"
+
+bow=$(ls | grep -o "Bow" | wc -l)
+echo "Bow : $bow"
+
+cd $FILE_DIR
+rm genshin.zip && rm genshin_character.zip && rm list_character.csv
+
+
+exec bash
+```
 
 **Perangkat Lunak yang Dibutuhkan:**
 
@@ -799,58 +898,184 @@ Skrip ini mengotomatiskan pengorganisasian gambar karakter Genshin yang diunduh 
 **Instruksi:**
 
 1. Pastikan program yang dibutuhkan sudah terinstall.
-2. Simpan skrip ini sebagai `genshin_character_organizer.sh`.
-3. Buat skrip dapat dieksekusi: `chmod +x genshin_character_organizer.sh`.
-4. Jalankan skrip: `./genshin_character_organizer.sh`.
+2. Simpan skrip ini sebagai `awal.sh`.
+3. Buat skrip dapat dieksekusi: `chmod +x awal.sh`.
+4. Jalankan skrip: `./awal.sh`.
 
 **Penjelasan:**
 
 1. **Pengaturan Direktori:**
     * Skrip membuat direktori bernama `praktikum_tka_no.2` di direktori home Anda jika belum ada.
     * Kemudian berpindah ke direktori `praktikum_tka_no.2`.
+    ```
+    FILE_DIR="/home/$USER/praktikum_tka_no.2"
+
+    if [ -d $FILE_DIR ]; then
+      echo "directory exist."
+    else
+      mkdir $FILE_DIR
+    fi
+    
+    cd $FILE_DIR
+    ```
 
 2. **Unduh File:**
     * Skrip mengunduh file ZIP (berisi gambar karakter dan daftar karakter) dari link Google Drive menggunakan `wget`.
     * Skrip mengekstrak kedua file arsip yang diunduh (`genshin.zip`) dan arsip terlampir (`genshin_character.zip`) secara diam-diam (tanpa output).
+    ```
+    wget -q --no-check-certificate 'https://docs.google.com/uc?export=download&id=1oGHdTf4_76_RacfmQIV4i7os4sGwa9vN' -O genshin.zip
+
+    unzip -q genshin.zip
+    unzip -q genshin_character.zip
+    ```
 
 3. **Ganti Nama Gambar Karakter:**
     * Skrip memeriksa apakah direktori `genshin_character` ada setelah diekstrak. Jika tidak, skrip akan keluar dengan pesan kesalahan.
     * Script kemudian melakukan perulangan pada setiap file gambar JPG di direktori saat ini.
     * Menggunakan `xxd`, script mengubah nama file dari format terenkripsi menjadi string karakter yang dapat dibaca dan menetapkannya ke variabel baru.
     * Nama file asli kemudian diganti dengan string baru yang dapat dibaca dengan ekstensi `.jpg` ditambahkan.
+    ```
+    if [ -d genshin_character ]; then
+      cd genshin_character
+    else
+      echo "Error: genshin_character directory not found after unzipping."
+      exit 1
+    fi
+    
+    for file in *.jpg; do
+      new_name=$(echo "$file" | xxd -p -r)
+      mv "$file" "$new_name".jpg
+    done
+    ```
 
 4. **Memproses Daftar Karakter:**
     * Skrip menggunakan `dos2unix` untuk mengonversi akhiran baris dalam file `list_character.csv` (jika perlu) untuk memastikan parsing yang benar.
     * Script ber iterasi melalui setiap baris dalam file CSV menggunakan loop `while`. Setiap baris dibagi menjadi kolom yang dipisahkan koma menggunakan `read`.
     * Di dalam loop, script kembali melakukan iterasi melalui setiap file gambar JPG.
     * Jika nama file gambar cocok dengan nama karakter dari kolom pertama baris CSV, skrip mengganti nama gambar dengan informasi tambahan dari kolom CSV (nama, tipe senjata, dll.).
+    ```
+    dos2unix $FILE_DIR/list_character.csv
+    
+    while IFS="," read -r col1 col2 col3 col4; do
+      for file in *.jpg; do
+        if [ "$file" == "$col1".jpg ]; then
+          mv "$file" "$col2 - $col1 - $col3 - $col4".jpg
+        fi
+      done
+    done < $FILE_DIR/list_character.csv
+    ```
 
-5. **Atur Gambar berdasarkan Jenis Senjata:**
+5. **Atur Gambar berdasarkan Jenis Region:**
     * Script kembali melakukan iterasi melalui setiap file gambar JPG.
-    * Script mengekstrak tipe senjata dari nama file menggunakan perintah `cut`.
-    * Jika direktori dengan nama tipe senjata sudah ada, gambar akan disalin ke direktori tersebut. Jika tidak, direktori baru akan dibuat, dan gambar akan disalin ke sana.
+    * Script mengekstrak tipe region dari nama file menggunakan perintah `cut`.
+    * Jika direktori dengan nama region sudah ada, gambar akan disalin ke direktori tersebut. Jika tidak, direktori baru akan dibuat, dan gambar akan disalin ke sana.
+    ```
+    for file in *.jpg; do 
+      dir_name=$(echo "$file" | cut -d "-" -f1)
+      if [ -d $dir_name ]; then
+        cp "$file" $FILE_DIR/genshin_character/$dir_name
+      else
+        mkdir $dir_name
+        cp "$file" $FILE_DIR/genshin_character/$dir_name
+      fi
+    done
+    ```
 
 6. **Jumlah Jenis Senjata:**
     * Script menggunakan `grep` untuk menghitung jumlah nama file gambar yang mengandung setiap tipe senjata ("Claymore", "Sword", dll.).
     * Kemudian script mencetak tipe senjata dan jumlahnya.
+    ```
+    claymore=$(ls | grep -o "Claymore" | wc -l)
+    echo "Claymore : $claymore"
+    
+    sword=$(ls | grep -o "Sword" | wc -l)
+    echo "Sword : $sword"
+    
+    polearm=$(ls | grep -o "Polearm" | wc -l)
+    echo "Polearm : $polearm"
+    
+    catalyst=$(ls | grep -o "Catalyst" | wc -l)
+    echo "Catalyst : $catalyst"
+    
+    bow=$(ls | grep -o "Bow" | wc -l)
+    echo "Bow : $bow"
+    ```
 
 7. **Pembersihan:**
     * Script berpindah kembali ke direktori kerja awal (`praktikum_tka_no.2`).
     * Terakhir, script menghapus file arsip yang diunduh (`genshin.zip` dan `genshin_character.zip`) dan file CSV daftar karakter.
+    ```
+    cd $FILE_DIR
+    rm genshin.zip && rm genshin_character.zip && rm list_character.csv
+    
+    
+    exec bash
+    ```
 
 8. **Mulai Ulang Shell:**
     * Script memulai kembali Bash shell (`exec bash`), yang pada umumnya tidak diperlukan tetapi mungkin berguna untuk keperluan debugging.
 
 
-**Catatan:**
-
-* Skrip ini bergantung pada format tertentu untuk file ZIP yang diunduh dan file CSV daftar karakter.
-* Anda mungkin perlu memodifikasi link download Google Drive atau logika untuk parsing file CSV tergantung pada format data yang sebenarnya.
-
-
-**Projek: Pencari Link Rahasia dari Gambar**
+**Pencari Link Rahasia dari Gambar**
 
 Skrip ini mencari link rahasia yang disembunyikan di dalam file gambar menggunakan teknik steganografi.
+
+**search.sh**
+```
+#!/bin/bash
+
+FILE_DIR="/home/$USER/praktikum_tka_no.2"
+
+if [ -d $FILE_DIR ]; then
+    echo "directory exist."
+else
+    mkdir $FILE_DIR
+fi
+
+cd $FILE_DIR
+
+if [ -d genshin_character ]; then
+    cd genshin_character
+else
+    echo "Error: genshin_character directory not found after unzipping."
+    exit 1
+fi
+
+pass=""
+
+for file in *.jpg; do
+    steghide extract -q -sf "$file" -p "$pass"
+done
+
+for file in *.txt; do
+    base64 -d "$file" > secret.txt
+    regex='(https?|ftp|file)://[-[:alnum:]\+&@#/%?=~_|!:,.;]*[-[:alnum:]\+&@#/%=~_|]'
+    string=$(cat secret.txt)
+    if [[ $string =~ $regex ]]; then 
+        mv secret.txt $FILE_DIR
+        echo "[$(date '+%Y/%M/%d %H:%M:%S')] [FOUND] [$FILE_DIR/genshin_character/$file]" >> image.log
+        break
+    else
+        echo "[$(date '+%Y/%M/%d %H:%M:%S')] [NOT FOUND] [$FILE_DIR/genshin_character/$file]" >> image.log
+    fi
+    rm "$file"
+    sleep 1
+done
+
+for file in *.txt; do
+    rm "$file"
+done
+
+mv image.log $FILE_DIR
+
+cd $FILE_DIR
+
+secret_link=$(cat "secret.txt")
+
+wget -O gambar.jpg "$secret_link"
+
+exec bash
+```
 
 **Perangkat Lunak yang Dibutuhkan:**
 
@@ -862,10 +1087,10 @@ Skrip ini mencari link rahasia yang disembunyikan di dalam file gambar menggunak
 **Instruksi:**
 
 1. Pastikan program yang dibutuhkan sudah terinstall.
-2. Simpan skrip ini sebagai `pencari_link_rahasia.sh`.
-3. Buat skrip dapat dieksekusi: `chmod +x pencari_link_rahasia.sh`.
+2. Simpan skrip ini sebagai `search.sh`.
+3. Buat skrip dapat dieksekusi: `chmod +x search.sh`.
 4. Pindahkan file gambar yang diduga mengandung link rahasia ke direktori `genshin_character` di direktori home Anda (sesuaikan jika direktori berbeda).
-5. Jalankan skrip: `./pencari_link_rahasia.sh`.
+5. Jalankan skrip: `./search.sh`.
 
 **Penjelasan:**
 
@@ -873,12 +1098,25 @@ Skrip ini mencari link rahasia yang disembunyikan di dalam file gambar menggunak
 
     * Skrip memeriksa keberadaan direktori `genshin_character`.
     * Jika direktori tidak ditemukan, skrip akan menampilkan pesan kesalahan dan keluar.
-
+    ```
+    if [ -d genshin_character ]; then
+        cd genshin_character
+    else
+        echo "Error: genshin_character directory not found after unzipping."
+        exit 1
+    fi
+    ```
 2. **Ekstrak Informasi dari Gambar:**
 
     * Script menggunakan program `steghide` untuk mengekstrak informasi tersembunyi dari setiap file gambar JPG di direktori `genshin_character`. 
     * Asumsikan password untuk ekstraksi sudah diketahui dan disimpan dalam variabel `pass`.
-
+    ```
+    pass=""
+    
+    for file in *.jpg; do
+        steghide extract -q -sf "$file" -p "$pass"
+    done
+    ```
 3. **Dekripsi dan Pencarian Link:**
 
     * Script kemudian memproses setiap file teks yang dihasilkan dari ekstraksi (`*.txt`).
@@ -890,15 +1128,45 @@ Skrip ini mencari link rahasia yang disembunyikan di dalam file gambar menggunak
         * Hentikan proses pencarian lebih lanjut.
     * Jika link tidak ditemukan, script akan mencatat informasi tersebut ke file log dan menghapus file teks.
     * Script memberikan jeda selama 1 detik antar proses tiap file untuk mencegah pemblokiran oleh server.
-
+    ```
+    for file in *.txt; do
+        base64 -d "$file" > secret.txt
+        regex='(https?|ftp|file)://[-[:alnum:]\+&@#/%?=~_|!:,.;]*[-[:alnum:]\+&@#/%=~_|]'
+        string=$(cat secret.txt)
+        if [[ $string =~ $regex ]]; then 
+            mv secret.txt $FILE_DIR
+            echo "[$(date '+%Y/%M/%d %H:%M:%S')] [FOUND] [$FILE_DIR/genshin_character/$file]" >> image.log
+            break
+        else
+            echo "[$(date '+%Y/%M/%d %H:%M:%S')] [NOT FOUND] [$FILE_DIR/genshin_character/$file]" >> image.log
+        fi
+        rm "$file"
+        sleep 1
+    done
+    ```
 4. **Bersihkan File Sementara:**
 
     * Script menghapus semua file teks sisa dari proses ekstraksi.
-
+    ```
+    for file in *.txt; do
+        rm "$file"
+    done
+    ```
 5. **Pindahkan File Log dan Unduh Gambar Rahasia:**
 
     * Script memindahkan file log (`image.log`) ke direktori utama (`$FILE_DIR`).
     * Script menggunakan `wget` untuk mengunduh gambar yang ditemukan berdasarkan link rahasia yang tersimpan di `secret.txt`. Gambar akan disimpan dengan nama `gambar.jpg`.
+    ```
+    mv image.log $FILE_DIR
+    
+    cd $FILE_DIR
+    
+    secret_link=$(cat "secret.txt")
+    
+    wget -O gambar.jpg "$secret_link"
+    
+    exec bash
+    ```
 
 6. **Mulai Ulang Shell:**
 
@@ -910,7 +1178,8 @@ Skrip ini mencari link rahasia yang disembunyikan di dalam file gambar menggunak
 * Script ini bergantung pada format dan teknik steganografi yang digunakan untuk menyembunyikan link rahasia di dalam gambar.
 * Anda perlu memindahkan file gambar yang ingin diproses ke direktori `genshin_character` terlebih dahulu. Sesuaikan lokasi direktori sesuai dengan kebutuhan Anda. 
 
-## *Dokumentasi
+## ***DOKUMENTASI***
+
 
 ## ***SOAL 4 (REVISI ALL)***
 Stitch sangat senang dengan PC di rumahnya. Suatu hari, PC nya secara tiba-tiba nge-freeze 🤯 Tentu saja, Stitch adalah seorang streamer yang harus setiap hari harus bermain game dan streaming.  Akhirnya, dia membawa PC nya ke tukang servis untuk diperbaiki. Setelah selesai diperbaiki, ternyata biaya perbaikan sangat mahal sehingga dia harus menggunakan uang hasil tabungan nya untuk membayarnya. Menurut tukang servis, masalahnya adalah pada CPU dan GPU yang overload karena gaming dan streaming sehingga mengakibatkan freeze pada PC nya. Agar masalah ini tidak terulang kembali, Stitch meminta kamu untuk membuat sebuah program monitoring resource yang tersedia pada komputer.
