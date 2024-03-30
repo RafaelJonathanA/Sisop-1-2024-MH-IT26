@@ -1117,12 +1117,16 @@ chmod 600 $hourly_log_file
 
 a. ###### bc 
 `digunakan agar perhitungan dari aritmatika bisa 2 angka di belakang koma`
+
 b. ###### -z 
 `digunakan untuk menguji apakah string tersebut kosong atau tidak`
+
 c. ###### [-p] 
 `digunakan untuk memeriksa apakah file ada dan dapat diakses`
+
 d. ###### IFS 
 `digunakan untuk menentukan pemisah karakter`
+
 e. ###### sed -n 
 `diguanakan untuk menampilkan output yang dipilih dan yang lain diabaikan `
 
