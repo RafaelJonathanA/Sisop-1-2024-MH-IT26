@@ -948,7 +948,6 @@ log_dir="/home/ubuntu/log"
 minute_log_file="$log_dir/metrics_$(date +'%Y%m%d%H').log"
 hourly_log_file="$log_dir/metrics_agg_$(date +'%Y%m%d%H').log"
 
-mkdir -p $log_dir
 
 min_ram_total=
 min_ram_used=
