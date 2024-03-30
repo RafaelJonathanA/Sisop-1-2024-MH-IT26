@@ -770,6 +770,9 @@ Dengan kode diatas maka setiap kali ada register yang berhasil ataupun gagal aka
 ![Admin 1 dan 2](https://github.com/Rafjonath/Sisop-1-2024-MH-IT26/assets/150375098/f07ba785-cf79-41a7-a159-823661c56ab9)
 ![admin 3 dan 4](https://github.com/Rafjonath/Sisop-1-2024-MH-IT26/assets/150375098/351ab9ed-df6b-451e-bae6-8c99e4375ba2)
 ![Tampilan log](https://github.com/Rafjonath/Sisop-1-2024-MH-IT26/assets/150375098/e68382d0-d04b-4f61-b9cf-1ac3dbe825eb)
+![Gagal login](https://github.com/Rafjonath/Sisop-1-2024-MH-IT26/assets/150375098/4ab51098-ffe2-4347-a7ea-30dee3eb95ec)
+![Tampilan log gagal](https://github.com/Rafjonath/Sisop-1-2024-MH-IT26/assets/150375098/677d0b9e-1289-4e76-87e4-de845d4bace4)
+
 
 ## ***SOAL 3 (Abhinaya)***
 **Projek: Pengatur Gambar Karakter Genshin**
