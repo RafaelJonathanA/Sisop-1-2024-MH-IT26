@@ -1179,7 +1179,10 @@ exec bash
 * Anda perlu memindahkan file gambar yang ingin diproses ke direktori `genshin_character` terlebih dahulu. Sesuaikan lokasi direktori sesuai dengan kebutuhan Anda. 
 
 ## ***DOKUMENTASI***
-
+![Screenshot from 2024-03-30 19-21-30](https://github.com/Rafjonath/Sisop-1-2024-MH-IT26/assets/123524655/0e11d913-2624-42c4-8831-873fda20affb)
+![Screenshot from 2024-03-30 19-22-22](https://github.com/Rafjonath/Sisop-1-2024-MH-IT26/assets/123524655/643e9182-3995-48f1-b2e7-1702499f3393)
+![Screenshot from 2024-03-30 19-22-36](https://github.com/Rafjonath/Sisop-1-2024-MH-IT26/assets/123524655/8e2fb546-515b-4083-af19-c6d4b1aa3059)
+![Screenshot from 2024-03-30 19-22-55](https://github.com/Rafjonath/Sisop-1-2024-MH-IT26/assets/123524655/1adfa8d1-d528-4771-a129-a54316ba5599)
 
 ## ***SOAL 4 (REVISI ALL)***
 Stitch sangat senang dengan PC di rumahnya. Suatu hari, PC nya secara tiba-tiba nge-freeze 🤯 Tentu saja, Stitch adalah seorang streamer yang harus setiap hari harus bermain game dan streaming.  Akhirnya, dia membawa PC nya ke tukang servis untuk diperbaiki. Setelah selesai diperbaiki, ternyata biaya perbaikan sangat mahal sehingga dia harus menggunakan uang hasil tabungan nya untuk membayarnya. Menurut tukang servis, masalahnya adalah pada CPU dan GPU yang overload karena gaming dan streaming sehingga mengakibatkan freeze pada PC nya. Agar masalah ini tidak terulang kembali, Stitch meminta kamu untuk membuat sebuah program monitoring resource yang tersedia pada komputer.
