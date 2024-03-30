@@ -1,14 +1,12 @@
 #!/bin/bash
 
-# Define log directory and file paths
+
 log_dir="/home/ubuntu/log"
 minute_log_file="$log_dir/metrics_$(date +'%Y%m%d%H').log"
 hourly_log_file="$log_dir/metrics_agg_$(date +'%Y%m%d%H').log"
 
-# Create log directory if it doesn't exist
-mkdir -p $log_dir
 
-# Initialize variables to store metrics
+# Inisiasi variabel
 min_ram_total=
 min_ram_used=
 min_ram_free=
@@ -43,12 +41,11 @@ min_disk_size=
 max_disk_size=
 sum_disk_size=0
 
-# Read metrics from minute log files
+# Membaca log matrics
 for file in $log_dir/*.log; do
     # Read the second line of the file
     metrics=$(sed -n '2p' "$file")
-
-    # Extract individual metrics
+    
     IFS=',' read -r mem_total mem_used mem_free mem_shared mem_buff mem_available swap_total swap_used swap_free path path_size <<< "$metrics"
 
     # Update RAM metrics
@@ -122,7 +119,7 @@ for file in $log_dir/*.log; do
     ((sum_swap_used += swap_used))
     ((sum_swap_free += swap_free))
 
-    # Update Disk metrics
+    # Mengupdate disk sizenya
     disk_size="${path_size//[!0-9]/}"
     if [[ -z $min_disk_size || $disk_size -lt $min_disk_size ]]; then
         min_disk_size=$disk_size
@@ -135,7 +132,7 @@ for file in $log_dir/*.log; do
     ((count++))
 done
 
-# Calculate average metrics
+# Menghitung rata-rata
 avg_ram_total=$(bc <<< "scale=2; $sum_ram_total / $count")
 avg_ram_used=$(bc <<< "scale=2; $sum_ram_used / $count")
 avg_ram_free=$(bc <<< "scale=2; $sum_ram_free / $count")
@@ -149,13 +146,13 @@ avg_swap_free=$(bc <<< "scale=2; $sum_swap_free / $count")
 
 avg_disk_size=$(bc <<< "scale=2; $sum_disk_size / $count")
 
-# Write aggregated metrics to hourly log file
+# Menuliskan hasilnya
 echo "type,mem_total,mem_used,mem_free,mem_shared,mem_buff,mem_available,swap_total,swap_used,swap_free,path,path_size" > $hourly_log_file
 echo "maximum,$max_ram_total,$max_ram_used,$max_ram_free,$max_ram_shared,$max_ram_buff,$max_ram_available,$max_swap_total,$max_swap_used,$max_swap_free,/home/ubuntu,$max_disk_size" >> $hourly_log_file
 echo "minimum,$min_ram_total,$min_ram_used,$min_ram_free,$min_ram_shared,$min_ram_buff,$min_ram_available,$min_swap_total,$min_swap_used,$min_swap_free,/home/ubuntu,$min_disk_size" >> $hourly_log_file
 echo "average,$avg_ram_total,$avg_ram_used,$avg_ram_free,$avg_ram_shared,$avg_ram_buff,$avg_ram_available,$avg_swap_total,$avg_swap_used,$avg_swap_free,/home/ubuntu,$avg_disk_size" >> $hourly_log_file
 
-# Set appropriate permissions
+# Mengeset izin 
 chmod 600 $hourly_log_file
 
 # Konfigurasi cron untuk menjalankan skrip ini setiap jam
