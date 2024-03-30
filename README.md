@@ -1115,16 +1115,16 @@ chmod 600 $hourly_log_file
 ```
 ## ***PENJELASAN PENGERJAAN***
 
-###### bc 
-digunakan agar perhitungan dari aritmatika bisa 2 angka di belakang koma
-###### -z 
-digunakan untuk menguji apakah string tersebut kosong atau tidak
-###### [-p] 
-digunakan untuk memeriksa apakah file ada dan dapat diakses
-###### IFS 
-digunakan untuk menentukan pemisah karakter
-###### sed -n 
-diguanakan untuk menampilkan output yang dipilih dan yang lain diabaikan 
+a. ###### bc 
+`digunakan agar perhitungan dari aritmatika bisa 2 angka di belakang koma`
+b. ###### -z 
+`digunakan untuk menguji apakah string tersebut kosong atau tidak`
+c. ###### [-p] 
+`digunakan untuk memeriksa apakah file ada dan dapat diakses`
+d. ###### IFS 
+`digunakan untuk menentukan pemisah karakter`
+e. ###### sed -n 
+`diguanakan untuk menampilkan output yang dipilih dan yang lain diabaikan `
 
 ## *Membuat metrics ke dalam suatu file log bernama metrics yang akan berjalan otomatis tiap menit*
 
