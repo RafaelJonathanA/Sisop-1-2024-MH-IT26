@@ -1320,3 +1320,7 @@ chmod 600 $hourly_log_file
 # 0 * * * * /home/ubuntu/SISOP/soal_4/aggregate_minutes_to_hourly_log.sh
 ```
 ## *Dokumentasi*
+
+![Minute log sh](https://github.com/Rafjonath/Sisop-1-2024-MH-IT26/assets/150375098/1bce9096-4dea-4f2d-ac00-f800dda0ed2b)
+![Isi minute log sh](https://github.com/Rafjonath/Sisop-1-2024-MH-IT26/assets/150375098/943f5457-9d66-4f66-acab-4cedf328646f)
+![Jam ke menit](https://github.com/Rafjonath/Sisop-1-2024-MH-IT26/assets/150375098/e1c6985b-d747-461e-9841-6696338e39a5) 
